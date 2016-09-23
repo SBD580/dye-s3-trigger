@@ -72,8 +72,8 @@ exports.handler = function(event, context, callback){
                             return callback(err);
                         }
                         console.log('Last food time was updated successfully');
-
-                        callback(null,data);
+                        console.log(data);
+                        callback(null);
                     });
                     return;
                 }
