@@ -21,7 +21,7 @@ exports.handler = function(event, context, callback){
     }, function(err, data){
         if (err) {
             console.error(err);
-            return callback(message);
+            return callback(err);
         }
 
         console.log('Object retrieved from S3 successfully');
@@ -32,7 +32,7 @@ exports.handler = function(event, context, callback){
                 new vision.Feature('LABEL_DETECTION', 100),
             ]
         })).then(function(res){
-            console.log(res);
+            console.log(JSON.stringify(res));
             callback(res);
         },function(err){
             console.error(err);
