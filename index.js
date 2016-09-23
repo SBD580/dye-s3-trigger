@@ -1,7 +1,5 @@
 'use strict';
 
-console.log('Loading function');
-
 var aws = require('aws-sdk');
 var vision = require('node-cloud-vision-api');
 
@@ -26,8 +24,10 @@ exports.handler = function(event, context, callback){
             return callback(message);
         }
 
+        console.log('Object retrieved from S3 successfully');
+
         vision.annotate(new vision.Request({
-            image: new vision.Image({base64: data.toString('base64')}),
+            image: new vision.Image({base64: data.body.toString('base64')}),
             features: [
                 new vision.Feature('LABEL_DETECTION', 100),
             ]
