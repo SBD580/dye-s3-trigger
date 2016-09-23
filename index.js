@@ -1,24 +1,23 @@
 'use strict';
 
-var aws = require('aws-sdk');
-var vision = require('node-cloud-vision-api');
-
+var GOOGLE_VISION_API_KEY = 'AIzaSyCMHDy3VglnLi72j-MYxFvQB413deiZDZw';
 var FOOD_LABELS = ['fish','milk','bread'];
 var FOOD_LABEL_MIN_SCORE = 0.5;
 var DETECTION_MAX_LABELS = 100;
-
 var DYNAMO_TABLE = 'dynamic-yield-exercise';
 var DYNAMO_PK = 'cat';
-var LAST_FOOD_TIME_ATTR = 'LAST_FOOD_TIME';
+var LAST_FOOD_TIME_ATTR = 'last_food_time';
+var LAST_FOOD_NOTIFIED_ATTR = 'last_food_notified';
+
+var aws = require('aws-sdk');
+var vision = require('node-cloud-vision-api');
 
 var s3 = new aws.S3({apiVersion: '2006-03-01'});
 var dynamodb = new aws.DynamoDB({apiVersion: '2012-08-10'});
 
-vision.init({auth: 'AIzaSyCMHDy3VglnLi72j-MYxFvQB413deiZDZw'});
+vision.init({auth: GOOGLE_VISION_API_KEY});
 
 exports.handler = function(event, context, callback){
-    // console.log('Received event:', JSON.stringify(event, null, 2));
-
     var bucket = event.Records[0].s3.bucket.name;
     var key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
 
@@ -61,10 +60,12 @@ exports.handler = function(event, context, callback){
                         Key: {
                             key: {S: DYNAMO_PK}
                         },
-                        UpdateExpression: 'SET '+LAST_FOOD_TIME_ATTR+' = :time',
+                        UpdateExpression: 'SET '+LAST_FOOD_TIME_ATTR+' = :time, '+LAST_FOOD_NOTIFIED_ATTR+' = :notified',
                         ExpressionAttributeValues: {
-                            ':time': {N: ""+Date.now()}
-                        }
+                            ':time': {N: ""+Date.now()},
+                            ':notified': {BOOL: false}
+                        },
+                        ReturnValues: 'ALL_OLD'
                     },function(err,data){
                         if(err){
                             console.error('Failed to update last food time');
@@ -72,7 +73,7 @@ exports.handler = function(event, context, callback){
                         }
                         console.log('Last food time was updated successfully');
 
-                        callback();
+                        callback(data);
                     });
                     return;
                 }
