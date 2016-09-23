@@ -48,7 +48,7 @@ exports.handler = function(event, context, callback){
             }
 
             var labels = res.responses[0].labelAnnotations;
-            console.log("Detected "+labels.left+" labels");
+            console.log("Detected "+labels.length+" labels");
             console.log(labels);
 
             for(var i=0;i<labels.length;i++){
@@ -63,7 +63,7 @@ exports.handler = function(event, context, callback){
                         },
                         UpdateExpression: 'SET '+LAST_FOOD_TIME_ATTR+' = :time',
                         ExpressionAttributeValues: {
-                            ':time': {N: Date.now()}
+                            ':time': {N: ""+Date.now()}
                         }
                     },function(err,data){
                         if(err){
