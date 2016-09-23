@@ -12,7 +12,7 @@ var DYNAMO_PK = 'cat';
 var LAST_FOOD_TIME_ATTR = 'LAST_FOOD_TIME';
 
 var s3 = new aws.S3({apiVersion: '2006-03-01'});
-var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+var dynamodb = new aws.DynamoDB({apiVersion: '2012-08-10'});
 
 vision.init({auth: 'AIzaSyCMHDy3VglnLi72j-MYxFvQB413deiZDZw'});
 
