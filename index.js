@@ -14,6 +14,9 @@ var vision = require('node-cloud-vision-api');
 
 var s3 = new aws.S3({apiVersion: '2006-03-01'});
 var dynamodb = new aws.DynamoDB({apiVersion: '2012-08-10'});
+var ses = new aws.SES({
+    apiVersion: '2010-12-01'
+});
 
 vision.init({auth: GOOGLE_VISION_API_KEY});
 
@@ -72,8 +75,21 @@ exports.handler = function(event, context, callback){
                             return callback(err);
                         }
                         console.log('Last food time was updated successfully');
-                        console.log(JSON.stringify(data));
-                        callback(null);
+
+                        if(!data.Attributes.last_food_notified.BOOL){
+                            console.log('The cat is not hungry anymore - SEND AN EMAIL');
+
+                            return ses.sendEmail({
+                                Destination: {
+                                    ToAddresses: ['sbd.580@gmail.com']
+                                },
+                                Message: {
+                                    Subject: '[BACK TO NORMAL] The cat is no longer hungry'
+                                },
+                            },callback);
+                        }
+
+                        callback();
                     });
                     return;
                 }
