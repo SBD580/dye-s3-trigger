@@ -9,15 +9,6 @@ var s3 = new aws.S3({apiVersion: '2006-03-01'});
 
 vision.init({auth: 'AIzaSyCMHDy3VglnLi72j-MYxFvQB413deiZDZw'});
 
-
-var vision = require('@google-cloud/vision')({
-    projectId: 'dynamic-yield-exercise',
-    credentials: {
-        client_email: 'sbd.580@gmail.com',
-        private_key: 'AIzaSyCMHDy3VglnLi72j-MYxFvQB413deiZDZw'
-    }
-});
-
 exports.handler = function(event, context, callback){
     // console.log('Received event:', JSON.stringify(event, null, 2));
 
