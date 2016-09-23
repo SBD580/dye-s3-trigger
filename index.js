@@ -72,7 +72,7 @@ exports.handler = function(event, context, callback){
                             return callback(err);
                         }
                         console.log('Last food time was updated successfully');
-                        console.log(data);
+                        console.log(JSON.stringify(data));
                         callback(null);
                     });
                     return;
