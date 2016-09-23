@@ -27,7 +27,7 @@ exports.handler = function(event, context, callback){
         console.log('Object retrieved from S3 successfully');
 
         vision.annotate(new vision.Request({
-            image: new vision.Image({base64: data.body.toString('base64')}),
+            image: new vision.Image({base64: data.Body.toString('base64')}),
             features: [
                 new vision.Feature('LABEL_DETECTION', 100),
             ]
