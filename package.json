@@ -1,0 +1,12 @@
+{
+  "name": "s3-trigger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Shay Ben David",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@google-cloud/vision": "^0.2.0"
+  }
+}
