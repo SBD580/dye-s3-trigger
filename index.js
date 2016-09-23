@@ -3,7 +3,12 @@
 console.log('Loading function');
 
 var aws = require('aws-sdk');
+var vision = require('node-cloud-vision-api');
+
 var s3 = new aws.S3({apiVersion: '2006-03-01'});
+
+vision.init({auth: 'AIzaSyCMHDy3VglnLi72j-MYxFvQB413deiZDZw'});
+
 
 var vision = require('@google-cloud/vision')({
     projectId: 'dynamic-yield-exercise',
@@ -30,14 +35,17 @@ exports.handler = function(event, context, callback){
             return callback(message);
         }
 
-        vision.detectLabels(data.body,function(err,labels){
-            if(err){
-                console.error(err);
-                return callback(err);
-            }
-
-            console.log(labels);
-            callback(null, labels);
+        vision.annotate(new vision.Request({
+            image: new vision.Image({base64: data.toString('base64')}),
+            features: [
+                new vision.Feature('LABEL_DETECTION', 100),
+            ]
+        })).then(function(res){
+            console.log(res);
+            callback(res);
+        },function(err){
+            console.error(err);
+            callback(err);
         });
     });
 };

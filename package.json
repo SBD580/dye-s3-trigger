@@ -7,6 +7,6 @@
   "author": "Shay Ben David",
   "license": "UNLICENSED",
   "dependencies": {
-    "@google-cloud/vision": "^0.2.0"
+    "node-cloud-vision-api": "^0.2.0"
   }
 }
