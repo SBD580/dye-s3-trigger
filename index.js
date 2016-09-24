@@ -75,7 +75,7 @@ exports.handler = function(event, context, callback){
                         }
                         console.log('Last food time was updated successfully');
 
-                        if(!data.Attributes.last_food_notified.BOOL){
+                        if(data.Attributes.last_food_notified.BOOL){
                             console.log('The cat is not hungry anymore - NOTIFY');
 
                             return sns.publish({
