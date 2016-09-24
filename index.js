@@ -8,15 +8,14 @@ var DYNAMO_TABLE = 'dynamic-yield-exercise';
 var DYNAMO_PK = 'cat';
 var LAST_FOOD_TIME_ATTR = 'last_food_time';
 var LAST_FOOD_NOTIFIED_ATTR = 'last_food_notified';
+var NOTIFICATION_TOPIC_ARN = 'arn:aws:sns:eu-west-1:776897963456:dye-cat';
 
 var aws = require('aws-sdk');
 var vision = require('node-cloud-vision-api');
 
 var s3 = new aws.S3({apiVersion: '2006-03-01'});
 var dynamodb = new aws.DynamoDB({apiVersion: '2012-08-10'});
-var ses = new aws.SES({
-    apiVersion: '2010-12-01'
-});
+var sns = new aws.SNS({apiVersion: '2010-03-31'});
 
 vision.init({auth: GOOGLE_VISION_API_KEY});
 
@@ -77,15 +76,12 @@ exports.handler = function(event, context, callback){
                         console.log('Last food time was updated successfully');
 
                         if(!data.Attributes.last_food_notified.BOOL){
-                            console.log('The cat is not hungry anymore - SEND AN EMAIL');
+                            console.log('The cat is not hungry anymore - NOTIFY');
 
-                            return ses.sendEmail({
-                                Destination: {
-                                    ToAddresses: ['sbd.580@gmail.com']
-                                },
-                                Message: {
-                                    Subject: '[BACK TO NORMAL] The cat is no longer hungry'
-                                },
+                            return sns.publish({
+                                Subject: '[BACK TO NORMAL] The cat is no longer hungry',
+                                Message: 'Great News! You can sit down and relax, the cat is no longer hungry.',
+                                TopicArn: NOTIFICATION_TOPIC_ARN
                             },callback);
                         }
 
