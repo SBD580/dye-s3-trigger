@@ -1,0 +1,3 @@
+## Dynamic Yield Exercise - S3 Trigger
+
+This part is triggered when an image is being uploaded to a specific bucket (in a specific path). It will read the image file, send it to Google Vision API (deprecated library - current library cant be used in AWS Lambda) for objects detection. If a food is found in the image (with a minimal score of 0.5) the cat will be fed - the last time the cat has been fed will be updated (DynamoDB)
