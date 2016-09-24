@@ -7,6 +7,8 @@
   "author": "Shay Ben David",
   "license": "UNLICENSED",
   "dependencies": {
-    "node-cloud-vision-api": "^0.2.0"
+    "bluebird": "^3.4.6",
+    "node-cloud-vision-api": "^0.2.0",
+    "underscore": "^1.8.3"
   }
 }
