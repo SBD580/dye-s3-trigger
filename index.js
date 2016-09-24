@@ -97,5 +97,5 @@ function notifyBackToNormal(){
         Subject: '[BACK TO NORMAL] The cat is no longer hungry',
         Message: 'Great News! You can sit down and relax, the cat is no longer hungry.',
         TopicArn: NOTIFICATION_TOPIC_ARN
-    })
+    });
 }
